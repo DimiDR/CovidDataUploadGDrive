@@ -20,9 +20,9 @@ def uploadNewFile(filename,FOLDER_ID,mimetype):
     except:
         print("Upload failed. ID: {}".format(file1.get('id')))
 
-def deleteOldFile(file_name):
+def deleteOldFile(file_name, FOLDER_ID):
     # search fr file id
-    fileList = drive.ListFile({'q': "'1RovjMstZWYNIQevwvjaaiKt2GuKw3Ks4' in parents and trashed=false"}).GetList()
+    fileList = drive.ListFile({'q': "'{}' in parents and trashed=false".format(FOLDER_ID)}).GetList()
     for file in fileList:
         # Get the folder ID that you want
         if(file['title'] == file_name):
@@ -62,5 +62,5 @@ d = datetime.today() # outside def because of recursion
 getCovidData(d)
 
 print("---Updating Covid Data on Drive---")
-deleteOldFile('covid.xlsx')
+deleteOldFile('covid.xlsx', FOLDER_ID)
 uploadNewFile('covid.xlsx', FOLDER_ID ,'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
